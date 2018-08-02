@@ -1,31 +1,45 @@
-class List extends React.Component {
-  constructor(){
-    super()
-    this.changeHandler = this.changeHandler.bind( this );
+class ListItem extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      term: '',
+      items: []
+    };
   }
 
-  state = {
-    list : [],
-    word : ""
+  onChange = (event) => {
+    this.setState({ term: event.target.value });
   }
 
-  changeHandler(event){
-    this.setState({word:event.target.value});
-    console.log("change", event.target.value);
+  onSubmit = (event) => {
+    event.preventDefault();
+    this.setState({
+      term: '',
+      items: [...this.state.items, this.state.term]
+    });
   }
 
   render() {
-      // render the list with a map() here
-
-      console.log("rendering");
-      return (
-        <div className="list">
-          <input onChange={this.changeHandler} value={this.state.word}/>
-          <button>add item</button>
-        </div>
-      );
+    return (
+      <div>
+        <form className="App" onSubmit={this.onSubmit}>
+          <input value={this.state.term} onChange={this.onChange} />
+          <button>Submit</button>
+        </form>
+        <List items={this.state.items} />
+      </div>
+    );
   }
 }
+
+const List = props => (
+  <ul>
+    {
+      props.items.map((item, index) => <li key={index}>{item}</li>)
+    }
+  </ul>
+);
 
 ReactDOM.render(
     <List/>,
