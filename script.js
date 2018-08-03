@@ -11,7 +11,7 @@ class List extends React.Component {
   }
   
   changeHandler(event){
-    this.setState({word:event.target.value});   //set state to current input value
+    this.setState({word:event.target.value});  
     console.log("change", event.target.value);  
   }
 
@@ -24,7 +24,6 @@ class List extends React.Component {
   
   render() {
       // render the list with a map() here
-      // console.log(this.state.list)
       let tasks = this.state.list;
       
       let taskitem = tasks.map(task => {
