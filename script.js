@@ -1,40 +1,50 @@
-class ListItem extends React.Component {
-  
-    constructor(props) {
-      super(props);
-      this.state = {
-        term: '',
-        items: []
-      };
-    }
-  
-    onChange = (event) => {
-      this.setState({ term: event.target.value });
-    }
-  
-    onSubmit = (event) => {
-      event.preventDefault();
-      this.setState({
-        term: '',
-        items: [...this.state.items, this.state.term]
-      });
-    }
-  
-    render() {
-      return (
-        <div>
-          <form className="App" onSubmit={this.onSubmit}>
-            <input value={this.state.term} onChange={this.onChange} />
-            <button>Submit</button>
-          </form>
-          <List items={this.state.items} />
-        </div>
-      );
-    }
+class List extends React.Component {
+  constructor(){
+    super()
+    this.changeHandler = this.changeHandler.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
-ReactDOM.render(
-    <List/>,
-    document.getElementById('root')
-);
+  state = {
+    list : [],
+    word : ""
+  }
+  
+  changeHandler(event){
+    this.setState({word:event.target.value});   //set state to current input value
+    console.log("change", event.target.value);  
+  }
 
+  clickHandler(event){
+    var newList = this.state.list;
+    newList.push(this.state.word);
+    this.setState( { list : newList } );
+    this.setState( { word : "" } );
+  }
+  
+  render() {
+      // render the list with a map() here
+      // console.log(this.state.list)
+      let tasks = this.state.list;
+      
+      let taskitem = tasks.map(task => {
+        return <li>{task}</li>
+      })
+
+      return (
+        <div className="list">
+          <p>{this.state.word}</p>
+          <input onChange={this.changeHandler} value={this.state.word}/>
+          <button onClick={this.clickHandler}>Add Task</button>
+          <ul>
+            {taskitem}
+          </ul>
+        </div>
+      );
+  }
+}
+
+ReactDOM.render(
+  <List/>,
+  document.getElementById('root')
+);
